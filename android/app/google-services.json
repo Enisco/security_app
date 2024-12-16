@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "934361020547",
+    "firebase_url": "https://esp32-cam-image-upload-default-rtdb.firebaseio.com",
+    "project_id": "esp32-cam-image-upload",
+    "storage_bucket": "esp32-cam-image-upload.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:934361020547:android:3022e9ae6919368c0343b6",
+        "android_client_info": {
+          "package_name": "com.example.security_image_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYCVUt6SK7RSRVRzyDVglXjE0s5IipnUI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:934361020547:android:eb23cc083a62740e0343b6",
+        "android_client_info": {
+          "package_name": "com.security_app.facerec"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYCVUt6SK7RSRVRzyDVglXjE0s5IipnUI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
