@@ -56,22 +56,21 @@ class _SecurityAppHomescreenState extends State<SecurityAppHomescreen> {
             padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 5),
             child: Column(
               children: [
-                const Spacer(),
-                Expanded(
-                  child: Container(
-                    child: controller.latestImageData?.url == null
-                        ? const Center(child: CircularProgressIndicator())
-                        : Image(
-                            image: CachedNetworkImageProvider(
-                              controller.latestImageData?.url ?? '',
-                            ),
-                            fit: BoxFit.fitWidth,
+                Container(
+                  color: Colors.white,
+                  height: 450,
+                  child: controller.latestImageData?.url == null
+                      ? const Center(child: CircularProgressIndicator())
+                      : Image(
+                          image: CachedNetworkImageProvider(
+                            controller.latestImageData?.url ?? '',
                           ),
-                  ),
+                          fit: BoxFit.fitWidth,
+                        ),
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 10),
                 Text(
-                  DateFormat('EEEE, MMM d, yyyy').format(
+                  DateFormat('EEEE, MMM d, yyyy, h:mm:ss a').format(
                     controller.latestImageData?.timeCreated ?? DateTime.now(),
                   ),
                 ),
@@ -98,8 +97,7 @@ class _SecurityAppHomescreenState extends State<SecurityAppHomescreen> {
                               ),
                             )
                           : Text(
-                              controller.faceRecResponse?.message ??
-                                  "Face recognition failed",
+                              controller.faceRecResponse?.message ?? " ",
                               style: TextStyle(
                                 fontSize: 22,
                                 color:

@@ -98,7 +98,7 @@ class SecurityAppController extends GetxController {
     }
   }
 
-  fetchAndSortAllImages() async {
+  fetchAllImagesList() async {
     isLoading = true;
     update();
     try {
@@ -118,13 +118,12 @@ class SecurityAppController extends GetxController {
 
       // Sort the list by timeCreated in descending order
       imageDataList.sort((a, b) => b.timeCreated!.compareTo(a.timeCreated!));
-      isLoading = false;
       allImagesDataList = imageDataList;
-      logger.w("allImagesDataList: ${allImagesDataList.length}");
     } catch (e) {
       logger.e("Error getting images list: ${e.toString()}");
-      allImagesDataList = [];
     }
+    isLoading = false;
+    logger.w("allImagesDataList: ${allImagesDataList.length}");
     update();
   }
 }
