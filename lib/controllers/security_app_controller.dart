@@ -6,14 +6,16 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
-import 'package:security_app/security_app/model.dart';
+import 'package:security_app/models/face_rec_model.dart';
+import 'package:security_app/models/image_data_model.dart';
 
 var logger = Logger();
 
 class SecurityAppController extends GetxController {
   SecurityAppController();
 
-  String? latestImageUrl;
+  ImageDataModel? latestImageData;
+  List<ImageDataModel> allImagesDataList = [];
   bool isLoading = false;
   FaceRecModel? faceRecResponse;
 
@@ -24,16 +26,22 @@ class SecurityAppController extends GetxController {
         update();
         final storageRef = FirebaseStorage.instance.ref().child('latest_photo');
         final downloadUrl = await storageRef.getDownloadURL();
-        latestImageUrl = downloadUrl;
-        logger.f("latestImageUrl: $latestImageUrl");
+
+        final metadata = await storageRef.getMetadata();
+        final latestImageTime = metadata.timeCreated;
+        latestImageData = ImageDataModel(
+          url: downloadUrl,
+          timeCreated: latestImageTime,
+        );
+        logger.f("latestImageUrl: ${latestImageData?.toJson()}");
+        update();
 
         // Fetch the URL from Firebase Realtime Database
         String? securityAppUrl = await _fetchSecurityAppUrl();
-        update();
 
         if (securityAppUrl != null) {
           final responseJson = await _checkFaceRecognition(
-              "$securityAppUrl/compare_faces?url=$latestImageUrl");
+              "$securityAppUrl/compare_faces?url=$downloadUrl");
           faceRecResponse = faceRecModelFromJson(jsonEncode(responseJson));
 
           update();
@@ -88,5 +96,35 @@ class SecurityAppController extends GetxController {
       throw Exception(
           'Failed to load data. Status Code: ${response.statusCode}');
     }
+  }
+
+  fetchAndSortAllImages() async {
+    isLoading = true;
+    update();
+    try {
+      final storageRef = FirebaseStorage.instance.ref().child('data');
+      final ListResult result = await storageRef.listAll();
+
+      List<ImageDataModel> imageDataList = [];
+      for (Reference ref in result.items) {
+        final FullMetadata metadata = await ref.getMetadata();
+        final String imageUrl = await ref.getDownloadURL();
+        final timeCreated = metadata.timeCreated;
+
+        imageDataList.add(
+          ImageDataModel(url: imageUrl, timeCreated: timeCreated),
+        );
+      }
+
+      // Sort the list by timeCreated in descending order
+      imageDataList.sort((a, b) => b.timeCreated!.compareTo(a.timeCreated!));
+      isLoading = false;
+      allImagesDataList = imageDataList;
+      logger.w("allImagesDataList: ${allImagesDataList.length}");
+    } catch (e) {
+      logger.e("Error getting images list: ${e.toString()}");
+      allImagesDataList = [];
+    }
+    update();
   }
 }

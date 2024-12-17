@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:security_app/security_app/secirity_app_homescreen.dart';
+import 'package:security_app/views/secirity_app_homescreen.dart';
 
 import 'firebase_options.dart';
 
@@ -22,10 +22,10 @@ class MyApp extends StatelessWidget {
       title: 'Security App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
         useMaterial3: true,
       ),
-      home: const SecirityAppHomescreen(),
+      home: const SecurityAppHomescreen(),
     );
   }
 }

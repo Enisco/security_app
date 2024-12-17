@@ -3,16 +3,17 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:security_app/security_app/security_app_controller.dart';
+import 'package:intl/intl.dart';
+import 'package:security_app/controllers/security_app_controller.dart';
 
-class SecirityAppHomescreen extends StatefulWidget {
-  const SecirityAppHomescreen({super.key});
+class SecurityAppHomescreen extends StatefulWidget {
+  const SecurityAppHomescreen({super.key});
 
   @override
-  State<SecirityAppHomescreen> createState() => _SecirityAppHomescreenState();
+  State<SecurityAppHomescreen> createState() => _SecurityAppHomescreenState();
 }
 
-class _SecirityAppHomescreenState extends State<SecirityAppHomescreen> {
+class _SecurityAppHomescreenState extends State<SecurityAppHomescreen> {
   final controller = Get.put(SecurityAppController());
 
   Timer? timer;
@@ -55,20 +56,28 @@ class _SecirityAppHomescreenState extends State<SecirityAppHomescreen> {
             padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 5),
             child: Column(
               children: [
+                const Spacer(),
                 Expanded(
                   child: Container(
-                    child: controller.latestImageUrl == null
+                    child: controller.latestImageData?.url == null
                         ? const Center(child: CircularProgressIndicator())
                         : Image(
                             image: CachedNetworkImageProvider(
-                              controller.latestImageUrl ?? '',
+                              controller.latestImageData?.url ?? '',
                             ),
                             fit: BoxFit.fitWidth,
                           ),
                   ),
                 ),
+                const SizedBox(height: 50),
+                Text(
+                  DateFormat('EEEE, MMM d, yyyy').format(
+                    controller.latestImageData?.timeCreated ?? DateTime.now(),
+                  ),
+                ),
+                const Spacer(),
                 Container(
-                  height: 100,
+                  height: 80,
                   width: size.width,
                   decoration: BoxDecoration(
                     color: Colors.teal,
